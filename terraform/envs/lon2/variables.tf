@@ -19,7 +19,7 @@ variable "cluster_cpu_node_count" {
 # Size specification for CPU nodes in the cluster
 variable "cluster_cpu_node_size" {
     type        = string
-    default     = "g4p.kube.large" 
+    default     = "g4s.kube.large" 
     description = "Size specification for CPU nodes in the cluster"
 }
 
