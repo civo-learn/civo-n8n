@@ -15,6 +15,8 @@ Before proceeding with the deployment, ensure you have the following prerequisit
    * For macOS (using Homebrew): Run `brew install terraform` in your terminal.
    * For Linux: Download the binary and move it to a directory in your system's PATH, such as `/usr/local/bin`.
 
+Once you have git, run `git clone https://github.com/civo-learn/civo-n8n.git`.
+
 ## Setting Up Your API Key
 
 Before running Terraform, you need to configure your Civo API key:
