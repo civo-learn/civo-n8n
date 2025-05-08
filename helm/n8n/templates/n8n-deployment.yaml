@@ -29,7 +29,9 @@ spec:
             - /bin/sh
           args:
             - -c
-            - sleep 5; n8n start
+            - |
+              sleep 5
+              n8n start
           env:
             - name: DB_TYPE
               value: postgresdb

@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: n8n-workflow-export
+  namespace: n8n
+spec:
+  schedule: "*/1 * * * *" 
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 60
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: n8n-workflow-export
+            image: n8nio/n8n
+            command:
+              - /bin/sh
+            args:
+              - -c
+              - |
+                  CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
+                  echo "Creating workflow export at $(date)"
+                  n8n export:workflow --all --output=/home/node/.n8n/workflows_${CURRENT_DATE}.json
+                  ln -sf /home/node/.n8n/workflows_${CURRENT_DATE}.json /home/node/.n8n/n8n_latest_export.json
+                  ls -1t /home/node/.n8n/workflows_*.json | tail -n +6 | xargs -r rm --
+            env:
+              - name: DB_TYPE
+                value: postgresdb
+              - name: DB_POSTGRESDB_HOST
+                value: postgres-service.n8n.svc.cluster.local
+              - name: DB_POSTGRESDB_PORT
+                value: "5432"
+              - name: DB_POSTGRESDB_DATABASE
+                value: n8n
+              - name: DB_POSTGRESDB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret
+                    key: POSTGRES_NON_ROOT_USER
+              - name: DB_POSTGRESDB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret
+                    key: POSTGRES_NON_ROOT_PASSWORD
+              - name: N8N_PROTOCOL
+                value: http
+              - name: N8N_PORT
+                value: "5678"
+              - name: N8N_SECURE_COOKIE
+                value: "false"
+            volumeMounts:
+              - mountPath: /home/node/.n8n
+                name: n8n-claim0
+          restartPolicy: OnFailure
+          volumes:
+            - name: n8n-claim0
+              persistentVolumeClaim:
+                claimName: n8n-claim0

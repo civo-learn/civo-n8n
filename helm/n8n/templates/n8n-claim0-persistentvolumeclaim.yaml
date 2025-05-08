@@ -5,6 +5,8 @@ metadata:
     service: n8n-claim0
   name: n8n-claim0
   namespace: n8n
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   accessModes:
     - ReadWriteOnce
