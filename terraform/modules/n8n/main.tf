@@ -29,9 +29,9 @@ resource "helm_release" "n8n-helm" {
   name       = "n8n-helm"
   chart      = "../../../helm/n8n"
   namespace  = kubernetes_namespace.n8n-namespace.id
-  replace   = true
+  replace   = false
   force_update = true
   wait       = true  
   values = [file("${path.module}/values.yaml")]
-  
+
 }
