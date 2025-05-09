@@ -24,8 +24,11 @@ spec:
                   CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
                   echo "Creating workflow export at $(date)"
                   n8n export:workflow --all --output=/home/node/.n8n/workflows_${CURRENT_DATE}.json
+                  n8n export:credentials --all --output=/home/node/.n8n/credentials_${CURRENT_DATE}.json
                   ln -sf /home/node/.n8n/workflows_${CURRENT_DATE}.json /home/node/.n8n/n8n_latest_export.json
+                  ln -sf /home/node/.n8n/credentials_${CURRENT_DATE}.json /home/node/.n8n/n8n_latest_credentials_export.json
                   ls -1t /home/node/.n8n/workflows_*.json | tail -n +6 | xargs -r rm --
+                  ls -1t /home/node/.n8n/credentials_*.json | tail -n +6 | xargs -r rm --
             env:
               - name: DB_TYPE
                 value: postgresdb
