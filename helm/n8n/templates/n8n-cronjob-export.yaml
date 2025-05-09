@@ -4,7 +4,7 @@ metadata:
   name: n8n-workflow-export
   namespace: n8n
 spec:
-  schedule: "*/1 * * * *" 
+  schedule: "0 0 * * *" 
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
